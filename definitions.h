@@ -17,7 +17,7 @@
 
 //==== RESET BUTTONS ====
 #define WIFI_RST 47
-#define HARD_RST 2
+#define HARD_RST 48
 #define TYPE_FILE 36
 
 //====SD CARD====
