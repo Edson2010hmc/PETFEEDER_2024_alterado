@@ -12,15 +12,13 @@ void connect_Wifi() {
   wifiManager.setDebugOutput(debug_set);     // Debug conforme configuração
   wifiManager.setMinimumSignalQuality(20);   // Sinal mínimo aceitável
   
-  unsigned long ultimaTentativaWiFi = 0;
-  const unsigned long intervaloTentativa = 60000; // Tentar a cada 1 minuto
-  
- 
-    // ✅ VERIFICAR SE PRECISA TENTAR CONECTAR
-    if (WiFi.status() != WL_CONNECTED) {
-      // Evita tentativas muito frequentes
-      if (millis() - ultimaTentativaWiFi > intervaloTentativa) {
-        ultimaTentativaWiFi = millis();
+unsigned long ultimaTentativaWiFi = 0;
+const unsigned long intervaloTentativa = 60000;
+
+if (WiFi.status() != WL_CONNECTED) {
+  // ✅ FORÇAR primeira tentativa OU respeitar intervalo
+  if (ultimaTentativaWiFi == 0 || millis() - ultimaTentativaWiFi > intervaloTentativa) {
+    ultimaTentativaWiFi = millis();
         
         wifiManager.setBreakAfterConfig(true);
         Serial.println("[WIFI] Tentando conectar...");
@@ -66,7 +64,8 @@ void connect_Wifi() {
     } else {
       ntp_flag = false;
     }
-        
+    
+    // ✅ ALIMENTAR WATCHDOG E LIBERAR CPU
 }
 
 // ============================================================================
