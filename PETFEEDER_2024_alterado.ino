@@ -130,7 +130,7 @@ void loop() {
     relogio();
   }
 
-  if (Wifi.status() != WL_CONNECTED) {
+  if (WiFi.status() != WL_CONNECTED) {
     wifi_reconnect_if_needed();
   }
   

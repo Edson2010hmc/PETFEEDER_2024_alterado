@@ -1,7 +1,7 @@
 // ============================================================================
 // TASK DE CONEXÃO - CORE 1
 // ============================================================================
-void connect_Wifi {
+void connect_Wifi() {
   
   Serial.println("Iniciando rotina WiFi");
   
@@ -15,7 +15,7 @@ void connect_Wifi {
   unsigned long ultimaTentativaWiFi = 0;
   const unsigned long intervaloTentativa = 60000; // Tentar a cada 1 minuto
   
-  for (;;) {
+ 
     // ✅ VERIFICAR SE PRECISA TENTAR CONECTAR
     if (WiFi.status() != WL_CONNECTED) {
       // Evita tentativas muito frequentes
@@ -66,10 +66,7 @@ void connect_Wifi {
     } else {
       ntp_flag = false;
     }
-    
-    // ✅ ALIMENTAR WATCHDOG E LIBERAR CPU
-    vTaskDelay(pdMS_TO_TICKS(2000)); // Espera 2 segundos
-  }
+        
 }
 
 // ============================================================================
