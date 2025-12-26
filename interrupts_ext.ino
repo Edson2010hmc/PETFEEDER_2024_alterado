@@ -25,52 +25,43 @@ bool bt_up(){
       if(!digitalRead(bt4) && t_bt4){t_bt4 = 0x00; 
          Serial.println("UP");       return true;}
     return false; 
-            }
+}
 
-bool bt_down()
-    {
-    if(digitalRead(bt3)) 
-        {
+bool bt_down(){
+    if(digitalRead(bt3)){
         t_bt3 = 0x01; 
-        }
+    }
     
-     if(!digitalRead(bt3) && t_bt3)
-         {                                           
+     if(!digitalRead(bt3) && t_bt3){                                           
          t_bt3 = 0x00;
          Serial.println("DOWN");                            
          return true;
-         }
+     }
     return false; 
 }
 
-bool bt_set()
-    {
-    if(digitalRead(bt2)) 
-        {
+bool bt_set(){
+    if(digitalRead(bt2)){
         t_bt2 = 0x01; 
-        }
+    }
     
-     if(!digitalRead(bt2) && t_bt2)
-         {                                           
+     if(!digitalRead(bt2) && t_bt2){                                           
          t_bt2 = 0x00;
          Serial.println("SET");                            
          return true;
-         }
+     }
     return false; 
 }
 
-bool bt_ok()
-    {
-    if(digitalRead(bt1)) 
-        {
+bool bt_ok(){
+    if(digitalRead(bt1)){
         t_bt1 = 0x01; 
-        }
+    }
     
-     if(!digitalRead(bt1) && t_bt1)
-         {                                           
+     if(!digitalRead(bt1) && t_bt1){                                           
          t_bt1 = 0x00;
          Serial.println("OK");                            
          return true;
-         }    
+     }    
     return false; 
-} 
+}

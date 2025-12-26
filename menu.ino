@@ -342,7 +342,7 @@ void menu_system(){
       mnopt=1;
     }
 
-   if (flag_menu==3){
+   if (flag_menu==3 && mnopt!=mnopt_ant){
    
    drawtext(menuop[mnopt], am, pt,3, 26, 1);
    drawtext(menu_desc_ptbr[0][mnopt],cy,az,0,55,1);
@@ -354,7 +354,10 @@ void menu_system(){
    else{
         drawtext("SET Seleciona  ESC Retorna",am,az,0,120,1);
        }
-     
+     mnopt_ant=mnopt;
+   }
+   else{
+    mnopt_ant=-1;
    }
 
 

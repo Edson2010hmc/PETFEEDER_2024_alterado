@@ -50,10 +50,10 @@ void start_servo(uint8_t pin, int angle) {
 void check_program(){
 
 if (segundo=="00"){
-Serial.println(horario);
-Serial.println(segundo);
+//Serial.println(horario);
+//Serial.println(segundo);
   if (debug_set){
-Serial.println("Verificando horários programados a cada minuto - Segundos = 0");
+//Serial.println("Verificando horários programados a cada minuto - Segundos = 0");
   }
 check_prog_clock_dog();
 check_prog_clock_cat();

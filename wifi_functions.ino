@@ -2,72 +2,26 @@
 // TASK DE CONEXÃO - CORE 1
 // =============================================================================
 void connect_Wifi() {
-  
   Serial.println("Iniciando rotina WiFi");
   
-  // ✅ CONFIGURAR TIMEOUTS NO WIFIMANAGER
-  wifiManager.setConfigPortalTimeout(120);   // 2 minutos máximo no portal
-  wifiManager.setConnectTimeout(30);         // 30 segundos por tentativa
-  wifiManager.setConnectRetries(3);          // 3 tentativas de conexão
-  wifiManager.setDebugOutput(debug_set);     // Debug conforme configuração
-  wifiManager.setMinimumSignalQuality(20);   // Sinal mínimo aceitável
+  wifiManager.setConfigPortalTimeout(0);     // 0 = AGUARDA PARA SEMPRE
+  wifiManager.setConnectTimeout(10);
+  wifiManager.setConnectRetries(5);
+  wifiManager.setDebugOutput(true);
+  wifiManager.setBreakAfterConfig(true);
   
-unsigned long ultimaTentativaWiFi = 0;
-const unsigned long intervaloTentativa = 60000;
-
-if (WiFi.status() != WL_CONNECTED) {
-  // ✅ FORÇAR primeira tentativa OU respeitar intervalo
-  if (ultimaTentativaWiFi == 0 || millis() - ultimaTentativaWiFi > intervaloTentativa) {
-    ultimaTentativaWiFi = millis();
-        
-        wifiManager.setBreakAfterConfig(true);
-        Serial.println("[WIFI] Tentando conectar...");
-        
-        // ✅ TRATAMENTO DE TIMEOUT
-        if (!wifiManager.autoConnect("PETFEEDER", "password")) {
-          Serial.println("[WIFI] Timeout - continuando sem WiFi");
-          Serial.println("[WIFI] Próxima tentativa em 1 minuto");
-          // ✅ NÃO REINICIA O ESP - continua funcionando
-        } else {
-          Serial.println("[WIFI] Conectado com sucesso!");
-          Serial.print("[WIFI] IP: ");
-          Serial.println(WiFi.localIP());
-          Serial.print("[WIFI] MAC: ");
-          Serial.println(WiFi.macAddress());
-          Serial.print("[WIFI] RSSI: ");
-          Serial.print(WiFi.RSSI());
-          Serial.println(" dB");
-        }
-      }
-    }
-    
-    // ✅ MQTT - Conectar se WiFi estiver ok
-    if (WiFi.status() == WL_CONNECTED && !mqttClient.connected()) {
-      Serial.println("[MQTT] Tentando conectar...");
-      mqtt_start();
-      
-      if (mqttClient.connected()) {
-        Serial.println("[MQTT] Conectado!");
-      } else {
-        Serial.println("[MQTT] Falha na conexão");
-      }
-    }
-    
-    // ✅ NTP - Sincronizar relógio
-    if (WiFi.status() == WL_CONNECTED) {
-      if (ntp_flag == false) {
-        Serial.println("[NTP] Sincronizando relógio...");
-        ntp_start();
-        ntp_flag = true;  // ✅ ATRIBUIÇÃO CORRIGIDA
-        Serial.println("[NTP] Sincronizado!");
-      }
-    } else {
-      ntp_flag = false;
-    }
-    
-    // ✅ ALIMENTAR WATCHDOG E LIBERAR CPU
+  Serial.println("[WIFI] Aguardando conexão...");
+  
+  wifiManager.autoConnect("PETFEEDER", "password");
+  
+  Serial.println("[WIFI] Conectado!");
+  Serial.print("[WIFI] IP: ");
+  Serial.println(WiFi.localIP());
+  wifi_icon_refresh(check_wifi_level());
+  mqtt_start();
+  ntp_start();
+  ntp_flag = true;
 }
-
 // ============================================================================
 // FUNÇÃO WIFI START (BLOQUEANTE - USO OPCIONAL)
 // ============================================================================
@@ -122,7 +76,8 @@ int check_wifi_level() {
     wf_lv = 0;
     
     int rssi = WiFi.RSSI();
-    
+    //Serial.print("[RSSI]");
+    //Serial.println(rssi);
     if (rssi > -50) {
       wf_lv = 4;
     } else if (rssi > -57) {
@@ -146,7 +101,8 @@ int check_wifi_level() {
 // ============================================================================
 void wifi_icon_refresh(int level_code) {
   posmem_wifi = 0;
-  
+  //Serial.print("[Wifi Level Scale]");
+  //Serial.println(level_code);
   const uint16_t* iconData;
   
   // Selecionar ícone baseado no nível
@@ -158,10 +114,10 @@ void wifi_icon_refresh(int level_code) {
       iconData = wifi25;
       break;
     case 2:
-      iconData = wifi50;
+      iconData = wifi55;
       break;
     case 3:
-      iconData = wifi75;
+      iconData = wifi70;
       break;
     case 4:
       iconData = wifi100;
@@ -204,7 +160,8 @@ void check_wifi_reset_button() {
         // Mensagem no display
         tft.fillScreen(az);
         drawtext("  RESETANDO WIFI...  ", az, bc, 0, 60, 2);
-        
+        delay(1000);
+        drawtext("                     ", az, bc, 0, 60, 2);
         // Reset
         wifiManager.resetSettings();
         
@@ -223,12 +180,19 @@ void check_wifi_reset_button() {
 // Reconectar WiFi se desconectado
 void wifi_reconnect_if_needed() {
   static unsigned long ultimaVerificacao = 0;
-  const unsigned long intervalo = 30000;  // 30 segundos
   
-  if (millis() - ultimaVerificacao > intervalo) {
+  if (millis() - ultimaVerificacao > 30000) {
     if (WiFi.status() != WL_CONNECTED) {
-      Serial.println("[WIFI] Desconectado - tentando reconectar...");
-      WiFi.reconnect();
+      wifi_icon_refresh(check_wifi_level());
+      Serial.println("[WIFI] Desconectado - reconectando...");
+      
+      if (wifiManager.autoConnect("PETFEEDER", "password")) {
+        Serial.println("[WIFI] Reconectado!");
+        wifi_icon_refresh(check_wifi_level());
+        mqtt_start();
+        ntp_start();
+        ntp_flag = true;
+      }
     }
     ultimaVerificacao = millis();
   }

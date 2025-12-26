@@ -108,22 +108,14 @@ connect_Wifi();
 void loop() {
   // Alimentar watchdog
   yield();
-  
-  // check external interrupts buttons - interrupts_ext.ino
+    // check external interrupts buttons - interrupts_ext.ino
   check_reset();
-  
-  // check commands from Serial port - Serial_Commands.ino
+    // check commands from Serial port - Serial_Commands.ino
   check_serial();
-  
-  // check ihm buttons - menu.ino
+    // check ihm buttons - menu.ino
   check_buttons();
-  
-  // ✅ CONTROLE DE TAXA PARA ATUALIZAÇÃO DE TELA (não crítica)
-  static unsigned long ultimaAtualizacaoTela = 0;
-  if (millis() - ultimaAtualizacaoTela >= 100) {  // 10 FPS suficiente para display
-    check_flag_menu();
-    ultimaAtualizacaoTela = millis();
-  }
+  check_flag_menu();
+
   
   // ✅ SEMPRE EXECUTAR (crítico para dispenser)
   if (WiFi.status() == WL_CONNECTED) {
@@ -141,5 +133,5 @@ void loop() {
   check_mqtt();
   
   // Pequeno delay para não sobrecarregar
-  delay(10);
+  delay(1);
 }

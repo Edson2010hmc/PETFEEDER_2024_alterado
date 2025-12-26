@@ -7,7 +7,7 @@ bool ntp_flag=false;
 bool setup_completo = false;
 //-----------------------------------------------------
 // ✅ DEBUG DESLIGADO EM PRODUÇÃO (mude para true se precisar debugar)
-bool debug_set = false;
+bool debug_set = true;
 int tempo=140;
 String num_ser = "PF022400132S3";
 String mqtt_user = num_ser;
@@ -139,7 +139,7 @@ uint8_t flag_menu=0;
 int refeicoes_cat_ant=0;
 int refeicoes_dog_ant=0;
 uint8_t mnopt=1;
-
+uint8_t mnopt_ant=-1;
 
 // MENU PROG ------------------------------------------------
 int cat_color_1 = 0;
