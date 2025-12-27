@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include "esp_task_wdt.h"
 #include "driver/ledc.h"
 #include <Adafruit_ST7735.h>
 #include <FS.h>

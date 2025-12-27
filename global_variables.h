@@ -167,6 +167,8 @@ bool flag_dispenser = false;
 int fuso_set= 0;
 int fuso_index_saved=0;
 bool flag_file=false;
+uint16_t dispenser_dog_time = 1000;
+uint16_t dispenser_cat_time = 1500;
 uint16_t dispenser_time = 1000;
 String dispenser_time_str = "";
  

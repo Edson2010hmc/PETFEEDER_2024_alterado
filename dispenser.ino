@@ -141,11 +141,11 @@ feed_cat();
 }
 
 void feed_cat(){
-start_servo(SERVO1_PIN, 135);
-delay(700);
+//start_servo(SERVO1_PIN, 135);
+//delay(700);
 start_servo(SERVO1_PIN, 45);
 Serial.println("Dispenser CAT");
-delay(dispenser_time);
+delay(dispenser_cat_time);
 start_servo(SERVO1_PIN, 92);
 // ✅ VERIFICAR SE MQTT ESTÁ CONECTADO antes de publicar
 if (mqttClient.connected()) {
@@ -158,11 +158,11 @@ if (mqttClient.connected()) {
 }
 
 void feed_dog(){
-start_servo(SERVO2_PIN, 135);
-delay(700);
+//start_servo(SERVO2_PIN, 135);
+//delay(700);
 start_servo(SERVO2_PIN, 45);
 Serial.println("Dispenser DOG");
-delay(dispenser_time);
+delay(dispenser_dog_time);
 start_servo(SERVO2_PIN, 92);
 // ✅ VERIFICAR SE MQTT ESTÁ CONECTADO antes de publicar
 if (mqttClient.connected()) {
