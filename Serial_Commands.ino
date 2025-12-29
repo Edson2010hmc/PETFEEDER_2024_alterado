@@ -14,6 +14,19 @@ void check_serial(){
 
 void Serial_check(String Com_S){
 
+  if (Com_S=="catf"){
+    Serial.println("O comando "+Com_S+ " foi processado.");
+    feed_cat();
+  }
+
+  if (Com_S=="dogf"){
+    Serial.println("O comando "+Com_S+ " foi processado.");
+    feed_dog();
+  }
+
+
+
+
   if (Com_S=="comm_1"){
     Serial.println("O comando "+Com_S+ " foi processado.");
     ledvm();

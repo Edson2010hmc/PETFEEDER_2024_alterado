@@ -7,11 +7,11 @@ void one_beep(int tb=300){
 void three_beep(){
   /*
   one_beep();
-  delay(30);
+  delay(100);
   one_beep();
-  delay(30);
+  delay(100);
   one_beep();
-  delay(30);
+  delay(100);
   */
 
 }

@@ -143,7 +143,7 @@ feed_cat();
 void feed_cat(){
 //start_servo(SERVO1_PIN, 135);
 //delay(700);
-start_servo(SERVO1_PIN, 45);
+start_servo(SERVO1_PIN, dispenser_cat_speed);
 Serial.println("Dispenser CAT");
 delay(dispenser_cat_time);
 start_servo(SERVO1_PIN, 92);
@@ -160,7 +160,7 @@ if (mqttClient.connected()) {
 void feed_dog(){
 //start_servo(SERVO2_PIN, 135);
 //delay(700);
-start_servo(SERVO2_PIN, 45);
+start_servo(SERVO2_PIN, dispenser_dog_speed);
 Serial.println("Dispenser DOG");
 delay(dispenser_dog_time);
 start_servo(SERVO2_PIN, 92);
