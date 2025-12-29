@@ -68,13 +68,10 @@ void check_mqtt(){
     dispenser_cat_time = val[3].toInt();
     
     save_dispenser_config();
-    Serial.println("Dispenser config atualizado via MQTT");
+    Serial.println("Dispenser_config atualizado via MQTT");
   }
 } 
 
-
- 
-}
 
 
 void pub_lvsl(){

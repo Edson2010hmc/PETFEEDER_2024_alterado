@@ -195,7 +195,7 @@ if (Com_S=="cat_60"){
     dispenser_cat_time = val[3].toInt();
     
     save_dispenser_config();
-    Serial.println("Servo config atualizada via Serial");
+    Serial.println("Dispenser_config atualizado via Serial");
   }
 }
 
@@ -203,4 +203,3 @@ if (Com_S=="cat_60"){
 
 
    
-}
