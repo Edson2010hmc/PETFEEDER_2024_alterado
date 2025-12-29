@@ -44,6 +44,35 @@ void check_mqtt(){
   if (comm_sub =="dogf"){feed_dog();}
   if(comm_sub=="prog"){publish_schedule();}
   if(comm_sub=="lvsl"){pub_lvsl();}
+
+
+  if(comm_sub=="disp"){
+    int idx = 0;
+    String val[4];
+    String temp = "";
+    String dados = subsc.substring(4);
+    
+    for(int i = 0; i < dados.length(); i++){
+      if(dados[i] == ','){
+        val[idx++] = temp;
+        temp = "";
+      } else {
+        temp += dados[i];
+      }
+    }
+    val[idx] = temp;
+    
+    dispenser_dog_speed = val[0].toInt();
+    dispenser_cat_speed = val[1].toInt();
+    dispenser_dog_time = val[2].toInt();
+    dispenser_cat_time = val[3].toInt();
+    
+    save_dispenser_config();
+    Serial.println("Dispenser config atualizado via MQTT");
+  }
+} 
+
+
  
 }
 

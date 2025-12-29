@@ -90,3 +90,5 @@ void disableJTAG();
 void attach_servo(gpio_num_t pin, ledc_channel_t channel);
 void wifi_reconnect_if_needed();
 void connect_Wifi();
+void save_dispenser_config();
+void read_dispenser_config();

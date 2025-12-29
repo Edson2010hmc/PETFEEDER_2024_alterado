@@ -145,6 +145,60 @@ void read_prog_file(fs::FS &fs, const char * path){
   
 }
 
+void read_dispenser_config(){
+  String config_str = read_saved(SD, "/dispenser_config.ptf");
+  
+  if(config_str == "\0"){
+    Serial.println("Arquivo dispenser_config não existe - criando...");
+    writeFile(SD, "/dispenser_config.ptf", "30,30,1300,1300");
+    return;
+  }
+  
+  int idx = 0;
+  String valores[4];
+  String temp = "";
+  
+  for(int i = 0; i < config_str.length(); i++){
+    if(config_str[i] == ','){
+      valores[idx++] = temp;
+      temp = "";
+    } else {
+      temp += config_str[i];
+    }
+  }
+  valores[idx] = temp;
+  
+  dispenser_dog_speed = valores[0].toInt();
+  dispenser_cat_speed = valores[1].toInt();
+  dispenser_dog_time = valores[2].toInt();
+  dispenser_cat_time = valores[3].toInt();
+  
+  if(debug_set){
+    Serial.println("Servo config carregada:");
+    Serial.print("Dog speed: "); Serial.println(dispenser_dog_speed);
+    Serial.print("Cat speed: "); Serial.println(dispenser_cat_speed);
+    Serial.print("Dog time: "); Serial.println(dispenser_dog_time);
+    Serial.print("Cat time: "); Serial.println(dispenser_cat_time);
+  }
+}
+
+void save_dispenser_config(){
+  String config = String(dispenser_dog_speed) + "," + 
+                  String(dispenser_cat_speed) + "," + 
+                  String(dispenser_dog_time) + "," + 
+                  String(dispenser_cat_time);
+  
+  writeFile(SD, "/dispenser_config.ptf", config.c_str());
+  
+  if(debug_set){
+    Serial.println("Servo config salva: " + config);
+  }
+}
+
+
+
+
+
 void publish_schedule(){
   String topico_pub = from_machine + "-schedule";
   publica(topico_pub,data_pub);
@@ -381,6 +435,7 @@ void reset_all_files(){
   deleteFile(SD, "/fuso.ptf");
   deleteFile(SD, "/progs.ptf");
   deleteFile(SD,"/prog_index.ptf");
+  deleteFile(SD,"/dispenser_config.ptf");
   deleteFile(SD,"/fuso_index.ptf");
   deleteFile(SD,"/time_disp.ptf");
   deleteFile(SD,"//prog_data.ptf");
@@ -392,6 +447,7 @@ void reset_all_files(){
   writeFile(SD,"/prog_index.ptf","7,31,55,79,7,31,55,79,");
   writeFile(SD,"/fuso_index.ptf","10");
   writeFile(SD,"/time_disp.ptf","3000");
+  writeFile(SD, "/dispenser_config.ptf","30,30,1300,1300");
   delay(500);
   const int inicioHora = 6;   
   const int fimHora = 22;     
@@ -416,6 +472,7 @@ void reset_all_files(){
 void get_config(){
      String fuso_index_saved_str="";
      read_prog_file(SD,"/prog_data.ptf");
+     read_dispenser_config();
      fuso_index_saved_str=(read_saved(SD,"/fuso_index.ptf"));
      saved_fuso =         (read_saved_times(SD, "/fuso.ptf"));
      dispenser_time_str = (read_saved(SD,"/time_disp.ptf"));

@@ -173,5 +173,34 @@ if (Com_S=="cat_60"){
         nivel_dog(100);
    }  
 
+     if(Com_S.substring(0,4)=="disp"){
+    int idx = 0;
+    String val[4];
+    String temp = "";
+    String dados = Com_S.substring(4);
+    
+    for(int i = 0; i < dados.length(); i++){
+      if(dados[i] == ','){
+        val[idx++] = temp;
+        temp = "";
+      } else {
+        temp += dados[i];
+      }
+    }
+    val[idx] = temp;
+    
+    dispenser_dog_speed = val[0].toInt();
+    dispenser_cat_speed = val[1].toInt();
+    dispenser_dog_time = val[2].toInt();
+    dispenser_cat_time = val[3].toInt();
+    
+    save_dispenser_config();
+    Serial.println("Servo config atualizada via Serial");
+  }
+}
+
+
+
+
    
 }
