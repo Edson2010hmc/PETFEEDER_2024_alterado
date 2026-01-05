@@ -121,6 +121,18 @@ void loop() {
   // ✅ SEMPRE EXECUTAR (crítico para dispenser)
   if (WiFi.status() == WL_CONNECTED) {
     relogio();
+  // ✅ PUBLICAR STATUS WIFI A CADA 30 SEGUNDOS
+    static unsigned long last_wifi_pub = 0;
+    if (millis() - last_wifi_pub > 30000) {
+      String wifi_status = "online";
+      publica(from_machine+"-wifi", wifi_status);
+      last_wifi_pub = millis();
+    }
+
+
+
+
+
   }
 
   if (WiFi.status() != WL_CONNECTED) {

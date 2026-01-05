@@ -1,4 +1,3 @@
-//-----------------MQTT FUNCTIONS -----------------------------------------------------------------------------------
 void mqtt_start(){
   
     mqttClient.setUsernamePassword(mqtt_user, mqtt_pass);
@@ -7,8 +6,6 @@ void mqtt_start(){
       Serial.print(mqttClient.connectError());
       Serial.println (" ao tentar se conectar ao Broker MQTT");
       Serial.println ("CONEXÃO NÃO REALIZADA! Continuando sem MQTT...");
-      
-      // ✅ NÃO REINICIA - permite funcionamento offline
       return;
     }
     else{
@@ -17,6 +14,12 @@ void mqtt_start(){
  
     mqttClient.subscribe(topico);
     
+    // ✅ PUBLICAR DADOS AUTOMATICAMENTE AO CONECTAR
+    delay(500); // Aguardar estabilização
+    publish_schedule();  // Publicar programação
+    pub_lvsl();          // Publicar níveis
+    
+    Serial.println("[MQTT] Dados iniciais publicados");
 }
 
  //updt07:0011:0015:0019:0007:0011:0015:0019:00
